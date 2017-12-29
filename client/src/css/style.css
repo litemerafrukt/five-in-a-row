@@ -1,0 +1,38 @@
+.App {
+    height: 100%;
+}
+
+.App-logo {
+    height: 80px;
+}
+
+.App-header {
+    padding: 1.5rem;
+}
+
+.App-title {
+    font-size: 1.5em;
+}
+
+.App-intro {
+    font-size: large;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    height: 2.5rem;
+}
+
+.navbar a {
+    text-decoration: none;
+    margin-right: 1rem;
+}
+
+.nav-brand {
+    font-weight: bold;
+}
+
+.nav-selected {
+    text-decoration: underline;
+}

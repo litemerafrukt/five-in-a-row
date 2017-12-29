@@ -1,0 +1,29 @@
+.CodeMirror {
+    text-align: left;
+    font-family: "source code pro";
+}
+
+.censored .CodeMirror {
+    font-family: "censor";
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}
+
+.me,
+.opponent {
+    display: inline;
+}
+
+.me .CodeMirror {
+    display: inline-block;
+    width: 66%;
+}
+
+.opponent .CodeMirror {
+    display: inline-block;
+    font-size: 7px;
+    width: 33%;
+}

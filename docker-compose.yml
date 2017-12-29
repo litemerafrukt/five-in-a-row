@@ -1,0 +1,43 @@
+version: "2"
+services:
+  test:
+    build:
+      context: .
+      dockerfile: .dockerfiles/node9-test
+    environment:
+      - TERM=xterm-256color
+    tty: true
+    links:
+      - mongotest
+    command: "npm run coverage"
+
+  mongotest:
+    image: mongo:3.4
+    container_name: "mongodb"
+    environment:
+        - MONGO_DATA_DIR=/data/db
+    ports:
+        - 27017:27017
+    command: mongod
+
+  mongodb:
+    image: mongo:3.4
+    container_name: "mongodb"
+    environment:
+        - MONGO_DATA_DIR=/data/db
+    ports:
+        - 27017:27017
+    command: mongod
+
+  server:
+    build:
+      context: .
+      dockerfile: .dockerfiles/node9
+    environment:
+      - DSN=mongodb://mongodb:27017/
+    links:
+      - mongodb
+    ports:
+      - 3000:3000
+    command: "npm start"
+

@@ -1,0 +1,80 @@
+{
+    "name": "five-in-a-row",
+    "version": "0.1.0",
+    "description": "five in a row",
+    "main": "server/index.js",
+    "author": "litemerafrukt",
+    "license": "MIT",
+    "scripts": {
+        "docker-build": "docker-compose build server mongodb",
+        "docker-start": "docker-compose up mongodb server && exit 0",
+        "docker-just-runit-already": "npm run docker-build; npm run docker-start",
+        "docker-production": "docker-compose up -d mongodb server",
+        "docker-test": "docker-compose build test && docker-compose run test",
+        "start": "node ./server/index.js",
+        "start-client": "cd client && npm start",
+        "start-backend-dev": "LOCAL_DEV_PORT=7000 nodemon ./server/index.js",
+        "dev": "concurrently --kill-others --raw \"npm run start-backend-dev\" \"npm run start-client\"",
+        "install-client": "cd client && npm install",
+        "build-client": "cd client && npm run build",
+        "stylelint-fix": "stylelint **/*.css --fix",
+        "coverage": "jest --coverage ; exit 0",
+        "test-client": "cd client && CI=true npm test",
+        "test": "npm run jest",
+        "jest": "jest",
+        "stylelint": "stylelint **/*.css; exit 0",
+        "eslint": "eslint .; exit 0",
+        "posttest": "npm run eslint; npm run stylelint",
+        "postinstall": "npm run install-client && npm run build-client"
+    },
+    "dependencies": {
+        "body-parser": "~1.18.2",
+        "codemirror": "^5.31.0",
+        "express": "~4.15.5",
+        "folktale": "^2.0.1",
+        "ramda": "^0.25.0",
+        "socket.io": "^2.0.4"
+    },
+    "devDependencies": {
+        "babel-jest": "^21.2.0",
+        "babel-plugin-transform-object-rest-spread": "^6.26.0",
+        "babel-preset-env": "^1.6.1",
+        "babel-preset-react": "^6.24.1",
+        "concurrently": "^3.5.0",
+        "enzyme": "^3.2.0",
+        "enzyme-adapter-react-16": "^1.1.0",
+        "eslint": "^4.6.1",
+        "eslint-plugin-react": "^7.4.0",
+        "jest": "^21.2.1",
+        "react": "^16.1.1",
+        "react-codemirror2": "^3.0.7",
+        "react-dom": "^16.1.1",
+        "react-router-dom": "^4.2.2",
+        "react-test-renderer": "^16.1.1",
+        "react-redux": "^5.0.5",
+        "redux": "^3.6.0",
+        "redux-devtools-extension": "^2.13.2",
+        "redux-thunk": "^2.2.0",
+        "stylelint": "^8.2.0",
+        "supertest": "^3.0.0"
+    },
+    "jest": {
+        "setupFiles": [
+            "<rootDir>/.fake-polyfills.js",
+            "<rootDir>/.test-setup.js"
+        ],
+        "modulePathIgnorePatterns": [
+            "<rootDir>/coverage/",
+            "<rootDir>/client/build",
+            "<rootDir>/client/src/css",
+            "<rootDir>/client/src/img",
+            "<rootDir>/client/node_modules"
+        ],
+        "moduleNameMapper": {
+            "\\.(css|jpg|png|svg)$": "<rootDir>/client/src/__mocks__/empty-module.js"
+        },
+        "collectCoverageFrom": [
+            "**/*.js"
+        ]
+    }
+}
