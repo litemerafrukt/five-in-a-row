@@ -36,3 +36,87 @@
 .nav-selected {
     text-decoration: underline;
 }
+
+ul {
+    padding: 0;
+}
+
+li {
+    list-style-type: none;
+}
+
+.message-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+}
+
+.message {
+    background-color: deepskyblue;
+    color:white;
+    /* border: solid 1px #61DAFB; */
+    /* position: absolute; */
+    text-align: center;
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.danger {
+    background-color: red;
+}
+
+.warning {
+    background-color: orange;
+}
+
+.chat-peers {
+    display: flex;
+    border: 1px solid #AAA;
+}
+
+.chat {
+    flex: 2;
+}
+
+.peers {
+    flex: 1;
+}
+
+.game-row {
+    font-family: monospace;
+    padding: 0;
+    margin: 0;
+    line-height: 0;
+    white-space: nowrap;
+}
+
+.game-cell {
+    font-family: monospace;
+    font-size: larger;
+    font-weight: bolder;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 21px;
+    width: 21px;
+    border: 1px solid #d4edf5;
+    cursor: pointer;
+    vertical-align: bottom;
+}
+
+.X {
+    color: green;
+    pointer-events: none;
+}
+
+.O {
+    color: red;
+    pointer-events: none;
+}
+
+.no-pointer {
+    pointer-events: none;
+    cursor: not-allowed;
+}

@@ -1,25 +1,26 @@
 import React from "react";
-import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 
 import PageLayout from "./pages/layout/PageLayout";
-import Home from "./pages/Home";
-import Lobby from "./pages/Lobby";
+import Welcome from "./pages/Welcome";
+import GamePage from "./pages/GamePage";
+import WatchGamePage from "./pages/WatchGamePage";
 
-const App = props => (
+const App = ({ nickname }) => (
     <Router>
-        {props.name === "" ? (
-            <Route path="/" component={Home} />
+        {nickname === "" ? (
+            <Route path="/" component={Welcome} />
         ) : (
             <Switch>
-                <Redirect from="/join" to="/" />
                 <PageLayout>
-                    <Route exact path="/" component={Home} />
-                    <Route path="/lobby" component={Lobby} />
+                    <Route exact path="/" component={Welcome} />
+                    <Route path="/game" component={GamePage} />
+                    <Route path="/watch" component={WatchGamePage} />
                 </PageLayout>
             </Switch>
         )}
     </Router>
 );
 
-export default connect(({ nick }) => ({ name: nick.name }))(App);
+export default connect(({ nick }) => ({ nickname: nick.name }))(App);

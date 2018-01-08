@@ -1,80 +1,38 @@
 import React from "react";
-import io from "socket.io-client";
+import { connect } from "react-redux";
+
+import { sendMessage, requestHistory } from "../../reducers/chat";
 
 import "./css/chat.css";
 import { ChatMessages } from "./ChatMessages";
 import { ChatInput } from "./ChatInput";
 
-export class Chat extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { messages: [], nick: props.nick };
-
-        this.sendMessage = this.sendMessage.bind(this);
-    }
-
-    componentWillUnmount() {
-        this.sendMessage("lämnar...");
-        this.socket.close();
-    }
-
+class Chat extends React.Component {
     componentDidMount() {
-        this.socket = io();
-
-        this.socket.on("connect", () => {
-            const message = { time: Date.now(), nick: "client", message: "anslöt till server" };
-
-            this.setState(({ messages }) => ({ messages: [...messages, message] }));
-            console.log("connected");
-        });
-
-        this.socket.on("disconnect", () => {
-            const message = { time: Date.now(), nick: "client", message: "servern gick ner" };
-
-            this.setState(({ messages }) => ({ messages: [...messages, message] }));
-            console.log("disconnected");
-        });
-
-        this.socket.on("requestNick", (_, fun) => fun(this.state.nick));
-
-        this.socket.on("newFriend", message => {
-            this.setState(({ messages }) => ({ messages: [...messages, message] }));
-        });
-
-        this.socket.on("lostFriend", message => {
-            this.setState(({ messages }) => ({ messages: [...messages, message] }));
-        });
-
-        this.socket.on("message", message => {
-            console.log(`${message}`);
-            this.setState(({ messages }) => ({ messages: [...messages, message] }));
-        });
-
-        this.socket.on("history", history => {
-            const historyBegin = { time: "-", nick: "server", message: "--{ history start }--" };
-            const historyEnd = { time: "-", nick: "server", message: "--{ history end }--" };
-
-            this.setState(({ messages }) => ({
-                messages: [...messages, historyBegin, ...history, historyEnd]
-            }));
-        });
-    }
-
-    sendMessage(message) {
-        console.log("sending message: ", message);
-        this.socket.emit("message", { message, nick: this.nick });
+        this.props.requestHistory();
     }
 
     render() {
-        // console.log(this.state);
+        const { chat, nick, sendMessage } = this.props;
+
         return (
             <div>
-                <p>Nick: {this.state.nick}</p>
+                <h5>Chat</h5>
                 <div>
-                    <ChatInput sendMessage={this.sendMessage} />
+                    <ChatInput sendMessage={sendMessage} />
                 </div>
-                <ChatMessages messages={this.state.messages} />
+                <span>{chat.statusMessage}</span>
+                <ChatMessages messages={chat.messages} />
             </div>
         );
     }
 }
+
+export default connect(
+    store => ({
+        nick: store.nick.name,
+        chat: store.chat,
+        socket: store.connection.socket
+    }),
+    { sendMessage, requestHistory }
+)(Chat);

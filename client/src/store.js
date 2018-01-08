@@ -1,7 +1,20 @@
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { nicknameReducer } from "./reducers/nickname";
+import thunk from "redux-thunk";
+import nicknameReducer from "./reducers/nickname";
+import connectionReducer from "./reducers/connection";
+import messageReducer from "./reducers/messages";
+import chatReducer from "./reducers/chat";
+import gamesReducer from "./reducers/games";
+import watchGameReducer from "./reducers/watchGame";
 
-const reducer = combineReducers({ nick: nicknameReducer });
+const reducer = combineReducers({
+    nick: nicknameReducer,
+    chat: chatReducer,
+    games: gamesReducer,
+    watchGame: watchGameReducer,
+    connection: connectionReducer,
+    message: messageReducer
+});
 
-export default createStore(reducer, composeWithDevTools());
+export default createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));

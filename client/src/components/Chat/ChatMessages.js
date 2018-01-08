@@ -16,6 +16,6 @@ const ChatMessage = ({ message }) => (
 
 export const ChatMessages = ({ messages }) => (
     <div className="chat-messages">
-        {messages.map((m, i) => console.log(m) || <ChatMessage key={i} message={m} />)}
+        {messages.map((m, i) => <ChatMessage key={i} message={m} />)}
     </div>
 );

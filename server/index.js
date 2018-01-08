@@ -2,8 +2,10 @@
  * Start up this thing
  */
 const http = require("http");
+const IO = require("socket.io");
+
 const app = require("./src/app");
-const { createChat } = require("./src/chat/chat");
+const socketSetup = require("./src/socket/socket-setup");
 
 /**
  * Get port from environment.
@@ -20,11 +22,16 @@ app.set("port", port);
 const server = http.createServer(app);
 
 /**
+ * Create IO
+ */
+const io = new IO(server);
+
+/**
  * Create chat
  */
-createChat(server);
+socketSetup(io);
 
 /**
  * Start listening
  */
-server.listen(port, () => console.log(`Dojo available on port ${port}.`));
+server.listen(port, () => console.log(`Five-in-a-row server available on port ${port}.`));

@@ -7,14 +7,16 @@ const SET_NICKNAME = "SET_NICKNAME";
 const INPUT_NICKNAME = "INPUT_NICKNAME";
 
 export const inputNickname = value => ({ type: INPUT_NICKNAME, payload: value });
-export const setNickname = () => ({ type: SET_NICKNAME });
+export const setNickname = nickname => ({ type: SET_NICKNAME, payload: nickname });
 
-export const nicknameReducer = (state = initialState, action) => {
+export default (state = initialState, action) => {
     switch (action.type) {
         case SET_NICKNAME:
-            return { ...state, name: state.currentInput, currentInput: "" };
+            return { ...state, name: action.payload, currentInput: "" };
+
         case INPUT_NICKNAME:
             return { ...state, currentInput: action.payload };
+
         default:
             return state;
     }
