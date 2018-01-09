@@ -13,7 +13,7 @@ class Chat extends React.Component {
     }
 
     render() {
-        const { chat, nick, sendMessage } = this.props;
+        const { chat, sendMessage } = this.props;
 
         return (
             <div>
@@ -30,7 +30,6 @@ class Chat extends React.Component {
 
 export default connect(
     store => ({
-        nick: store.nick.name,
         chat: store.chat,
         socket: store.connection.socket
     }),

@@ -5,7 +5,7 @@ import * as gomoku from "../../gomoku/gomokugame";
 
 import { makeMove, abandonGame } from "../../reducers/games";
 
-const GameCell = props => {
+export const GameCell = props => {
     const { value, x, y, handleMakeMove, myTurn } = props;
 
     const ascii = value === 0 ? " " : value === 1 ? "X" : "O";
@@ -23,7 +23,7 @@ const GameCell = props => {
     );
 };
 
-const GameState = props => {
+export const GameState = props => {
     const stateMessage = () => {
         switch (props.gameState) {
             case gomoku.STATE.PLAYING:
@@ -46,7 +46,7 @@ const GameState = props => {
     return <h5>{stateMessage()}</h5>;
 };
 
-const NextInTurn = props => {
+export const NextInTurn = props => {
     const nextToPlay = () => {
         switch (props.nextToMove) {
             case gomoku.PLAYER.ONE:
@@ -73,8 +73,10 @@ const GomokuGame = props => {
 
     const abandon = () => abandonGame(playing);
 
-    const gameStatePlaying = game === null ? false : game.state === gomoku.STATE.PLAYING;
-    const myTurnToPlay = game === null ? false : myTurn(game.players, game.nextToMove, myNick);
+    const gameStatePlaying =
+        game === null ? false : game.state === gomoku.STATE.PLAYING;
+    const myTurnToPlay =
+        game === null ? false : myTurn(game.players, game.nextToMove, myNick);
     const handleMakeMove = myTurnToPlay ? makeMove : () => {};
 
     return game === null ? (
@@ -83,7 +85,12 @@ const GomokuGame = props => {
         <div>
             <GameState gameState={game.state} players={game.players} />
             <p>Spelare: {game.players.join(", ")}</p>
-            {gameStatePlaying && <NextInTurn nextToMove={game.nextToMove} players={game.players} />}
+            {gameStatePlaying && (
+                <NextInTurn
+                    nextToMove={game.nextToMove}
+                    players={game.players}
+                />
+            )}
             {gameStatePlaying && myTurnToPlay ? <p>Din tur</p> : <p>&nbsp;</p>}
             <div>
                 {game.board.map((row, y) => (
@@ -109,7 +116,10 @@ const GomokuGame = props => {
     );
 };
 
-export default connect(state => ({ games: state.games, myNick: state.nick.name }), {
-    makeMove,
-    abandonGame
-})(GomokuGame);
+export default connect(
+    state => ({ games: state.games, myNick: state.nick.name }),
+    {
+        makeMove,
+        abandonGame
+    }
+)(GomokuGame);

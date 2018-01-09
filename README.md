@@ -1,7 +1,7 @@
 # Five in a row
 
 [![Build Status](https://travis-ci.org/litemerafrukt/five-in-a-row.svg?branch=master)](https://travis-ci.org/litemerafrukt/five-in-a-row)
-[![Maintainability](https://api.codeclimate.com/v1/badges/five-in-a-row/maintainability)](https://codeclimate.com/github/litemerafrukt/five-in-a-row/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/4a8fbc009cdf804d3040/maintainability)](https://codeclimate.com/github/litemerafrukt/five-in-a-row/maintainability)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/litemerafrukt/five-in-a-row/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/litemerafrukt/five-in-a-row/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/litemerafrukt/five-in-a-row/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/litemerafrukt/five-in-a-row/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/litemerafrukt/five-in-a-row/badges/build.png?b=master)](https://scrutinizer-ci.com/g/litemerafrukt/five-in-a-row/build-status/master)

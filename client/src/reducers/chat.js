@@ -1,5 +1,3 @@
-import { addStatusMessage } from "./messages";
-
 const initialState = { messages: [], statusMessage: "" };
 
 export const ADD_CHAT_MESSAGE = "ADD_CHAT_MESSAGE";

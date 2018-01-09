@@ -1,26 +1,30 @@
 const Maybe = require("folktale/maybe");
-const Games = require("../games/games");
-const Users = require("../users/users.js");
-const RunningBuffer = require("./running-buffer/running-buffer");
+// const Games = require("../games/games");
+// const Users = require("../users/users.js");
+// const RunningBuffer = require("./running-buffer/running-buffer");
 
 const gomoku = require("../games/gomoku/gomokugame");
 
-const games = new Games();
-const users = new Users();
-const runningMessageBuffer = new RunningBuffer(15);
+// const games = new Games();
+// const users = new Users();
+// const runningMessageBuffer = new RunningBuffer(15);
 
 const noop = () => {};
 
 const saveOnGameEnd = game =>
     game.state !== gomoku.STATE.PLAYING && console.log("Game ended!", game);
 
-const createMessage = ({ message = "", nick = "server", time = Date.now() }) => ({
+const createMessage = ({
+    message = "",
+    nick = "server",
+    time = Date.now()
+}) => ({
     message,
     nick,
     time
 });
 
-const setupUserSocketHandling = io => {
+const setupUserSocketHandling = (io, users, games) => {
     io.on("connection", socket => {
         console.log("connection");
 
@@ -49,11 +53,17 @@ const setupUserSocketHandling = io => {
                 users.users.find(user => user.socketId === socket.id)
             );
             const maybePendingGame = maybeUser.chain(user =>
-                Maybe.fromNullable(games.pending.find(pg => pg.nick === user.nick))
+                Maybe.fromNullable(
+                    games.pending.find(pg => pg.nick === user.nick)
+                )
             );
             const maybeGame = maybeUser.chain(user =>
                 Maybe.fromNullable(
-                    games.ongoing.find(g => g.game.players.find(n => n === user.nick) !== undefined)
+                    games.ongoing.find(
+                        g =>
+                            g.game.players.find(n => n === user.nick) !==
+                            undefined
+                    )
                 )
             );
 
@@ -87,7 +97,7 @@ const setupUserSocketHandling = io => {
     return io;
 };
 
-const setupChatSocketHandling = io => {
+const setupChatSocketHandling = (io, runningMessageBuffer) => {
     io.on("connection", socket => {
         socket.on("requestHistory", () => {
             runningMessageBuffer.buffer.forEach(message => {
@@ -107,7 +117,7 @@ const setupChatSocketHandling = io => {
     return io;
 };
 
-const setupGameSocketHandling = io => {
+const setupGameSocketHandling = (io, games) => {
     io.on("connection", socket => {
         socket.on("createPendingGame", ({ nick, size }, fn) => {
             const id = games.createPending(nick, size);
@@ -116,7 +126,9 @@ const setupGameSocketHandling = io => {
             io.emit("pendingGames", games.pending);
         });
 
-        socket.on("requestPendingGames", () => socket.emit("pendingGames", games.pending));
+        socket.on("requestPendingGames", () =>
+            socket.emit("pendingGames", games.pending)
+        );
 
         socket.on("requestOngoingGames", () =>
             socket.emit(
@@ -161,7 +173,8 @@ const setupGameSocketHandling = io => {
 
             resultGame.matchWith({
                 Ok: ({ value }) => io.emit("gameUpdated", { game: value }),
-                Error: ({ value }) => io.emit("gameError", { id, gameError: value })
+                Error: ({ value }) =>
+                    io.emit("gameError", { id, gameError: value })
             });
         });
     });
@@ -169,10 +182,10 @@ const setupGameSocketHandling = io => {
     return io;
 };
 
-const socketSetup = io => {
-    setupUserSocketHandling(io);
-    setupChatSocketHandling(io);
-    setupGameSocketHandling(io);
+const socketSetup = (io, users, games, runningMessageBuffer) => {
+    setupUserSocketHandling(io, users, games);
+    setupChatSocketHandling(io, runningMessageBuffer);
+    setupGameSocketHandling(io, games);
 };
 
 module.exports = socketSetup;

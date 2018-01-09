@@ -9,7 +9,7 @@ const OngoingGames = class extends React.Component {
     }
 
     render() {
-        const { ongoingGames, watchGame, playing } = this.props;
+        const { ongoingGames, watchGame } = this.props;
 
         return (
             <div>

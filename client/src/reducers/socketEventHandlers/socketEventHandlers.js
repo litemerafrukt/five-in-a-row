@@ -2,7 +2,12 @@ import store from "../../store";
 import { addChatMessage } from "../chat";
 import { addStatusMessage } from "../messages";
 import { addPeer, removePeer, setPeers } from "../connection";
-import { setPendingGames, gameCreated, gameAbandoned, gameUpdated } from "../games";
+import {
+    setPendingGames,
+    gameCreated,
+    gameAbandoned,
+    gameUpdated
+} from "../games";
 import { setOngoingGames } from "../watchGame";
 
 export const connectionEvents = socket => {
@@ -23,7 +28,8 @@ export const connectionEvents = socket => {
                 // Probably nick taken
                 store.dispatch(
                     addStatusMessage({
-                        message: "Servern kopplade ner dig. Försök med ett annat nick.",
+                        message:
+                            "Servern kopplade ner dig. Försök med ett annat nick.",
                         style: "danger"
                     })
                 );
@@ -60,9 +66,13 @@ export const peerEvents = socket => {
 };
 
 export const gameEvents = socket => {
-    socket.on("pendingGames", pendingGames => store.dispatch(setPendingGames(pendingGames)));
+    socket.on("pendingGames", pendingGames =>
+        store.dispatch(setPendingGames(pendingGames))
+    );
 
-    socket.on("ongoingGames", ongoingGames => store.dispatch(setOngoingGames(ongoingGames)));
+    socket.on("ongoingGames", ongoingGames =>
+        store.dispatch(setOngoingGames(ongoingGames))
+    );
 
     socket.on("gameCreated", game => {
         store.dispatch(gameCreated(game));
@@ -72,7 +82,7 @@ export const gameEvents = socket => {
 
     socket.on("gameUpdated", ({ game }) => store.dispatch(gameUpdated(game)));
 
-    socket.on("gameError", ({ id, gameError }) =>
-        console.log(`gameError: ${id}: `, gameError.value)
+    socket.on("gameError", ({ id, error }) =>
+        console.log(`gameError: ${id}: `, error)
     );
 };
