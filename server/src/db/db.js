@@ -29,14 +29,4 @@ const collectionDo = dbDo => collectionName => async (...funcs) => {
     return await dbDo(withCollection);
 };
 
-/**
- *  :: (String, String, Object) -> Promise(void)
- */
-const resetCollection = async (dsn, collectionName, documents) => {
-    await collectionDo(dbDo(dsn))(collectionName)(
-        collection => collection.deleteMany(),
-        collection => collection.insertMany(documents)
-    );
-};
-
-module.exports = { resetCollection, dbDo, collectionDo, ObjectID };
+module.exports = { dbDo, collectionDo, ObjectID };

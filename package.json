@@ -18,7 +18,7 @@
         "install-client": "cd client && npm install",
         "build-client": "cd client && npm run build",
         "stylelint-fix": "stylelint **/*.css --fix",
-        "coverage": "jest --coverage ; exit 0",
+        "coverage": "jest --coverage",
         "test-client": "cd client && CI=true npm test",
         "test": "npm run jest",
         "jest": "jest",
@@ -35,7 +35,8 @@
         "gomokuai": "^1.0.2",
         "ramda": "^0.25.0",
         "socket.io": "^2.0.4",
-        "uniqid": "^4.1.1"
+        "uniqid": "^4.1.1",
+        "mongodb": "^2.2.33"
     },
     "devDependencies": {
         "babel-jest": "^21.2.0",
@@ -49,7 +50,6 @@
         "eslint-plugin-react": "^7.4.0",
         "jest": "^21.2.1",
         "react": "^16.1.1",
-        "react-codemirror2": "^3.0.7",
         "react-dom": "^16.1.1",
         "react-router-dom": "^4.2.2",
         "react-test-renderer": "^16.1.1",
@@ -76,7 +76,7 @@
             "\\.(css|jpg|png|svg)$": "<rootDir>/client/src/__mocks__/empty-module.js"
         },
         "collectCoverageFrom": [
-            "**/*.js"
+            "**/src/**/*.js"
         ]
     }
 }

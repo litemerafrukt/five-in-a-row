@@ -23,6 +23,7 @@ class PendingGame {
 
 class Game {
     constructor(pendingGame, nick2) {
+        console.log(pendingGame);
         this.game = gomoku.create(pendingGame.nick, nick2, pendingGame.size);
         this.id = pendingGame.id;
     }
@@ -33,17 +34,19 @@ class Game {
     }
 
     makeMove(nick, pos) {
-        const player = playerIndexToPlayer(this.game.players.findIndex(n => n === nick));
+        const player = playerIndexToPlayer(
+            this.game.players.findIndex(n => n === nick)
+        );
 
         return player === undefined
             ? Result.Error(`Player ${nick} not part of game ${this.id}`)
             : gomoku.makeMove(this.game, player, pos).matchWith({
-                Ok: ({ value }) => {
-                    this.game = value;
-                    return Result.Ok(this);
-                },
-                Error: ({ value }) => Result.Error({ value })
-            });
+                  Ok: ({ value }) => {
+                      this.game = value;
+                      return Result.Ok(this);
+                  },
+                  Error: ({ value }) => Result.Error({ value })
+              });
     }
 }
 

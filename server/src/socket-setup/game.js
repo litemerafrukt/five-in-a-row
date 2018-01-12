@@ -1,9 +1,15 @@
+const Maybe = require("folktale/maybe");
 const gomoku = require("../games/gomoku/gomokugame");
+const gameHistory = require("../history/games");
 
 const noop = () => {};
 
-const saveOnGameEnd = game =>
-    game.state !== gomoku.STATE.PLAYING && console.log("Game ended!", game);
+const gameEnded = game => game.state !== gomoku.STATE.PLAYING;
+
+const saveGame = game => {
+    gameHistory.insert(game);
+    console.log("Game saved!", game);
+};
 
 const setupGameSocketHandling = (io, games) => {
     io.on("connection", socket => {
@@ -39,6 +45,7 @@ const setupGameSocketHandling = (io, games) => {
                 games.ongoing.map(g => ({ id: g.id, players: g.game.players }))
             );
         });
+
         socket.on("cancelPendingGame", ({ id }) => {
             games.removePending(id);
             io.emit("pendingGames", games.pending);
@@ -54,10 +61,15 @@ const setupGameSocketHandling = (io, games) => {
         socket.on("makeMove", ({ id, nick, pos }) => {
             const resultGame = games.makeMove(id, nick, pos);
 
-            resultGame.matchWith({
-                Ok: ({ value }) => saveOnGameEnd(value.game),
-                Error: noop
-            });
+            Maybe.fromResult(resultGame)
+                .filter(g => gameEnded(g.game))
+                .matchWith({
+                    Just: ({ value }) => {
+                        saveGame(value.game);
+                        io.emit("gameEnded", value);
+                    },
+                    Nothing: noop
+                });
 
             resultGame.matchWith({
                 Ok: ({ value }) => io.emit("gameUpdated", { game: value }),

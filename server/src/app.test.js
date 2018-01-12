@@ -1,5 +1,5 @@
 /**
- * Preliminary tests
+ * app tests
  */
 
 /* global test */

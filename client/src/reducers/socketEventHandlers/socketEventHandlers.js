@@ -9,6 +9,7 @@ import {
     gameUpdated
 } from "../games";
 import { setOngoingGames } from "../watchGame";
+import { requestHistoricGames } from "../history";
 
 export const connectionEvents = socket => {
     socket.on("connect", () => {
@@ -85,4 +86,6 @@ export const gameEvents = socket => {
     socket.on("gameError", ({ id, error }) =>
         console.log(`gameError: ${id}: `, error)
     );
+
+    socket.on("gameEnded", game => store.dispatch(requestHistoricGames()));
 };

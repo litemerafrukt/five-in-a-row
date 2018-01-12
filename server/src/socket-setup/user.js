@@ -1,4 +1,5 @@
-const Maybe = require("folktale/maybe");
+// const Maybe = require("folktale/maybe");
+const fromNullable = require("folktale/conversions/nullable-to-maybe");
 
 const noop = () => {};
 
@@ -18,25 +19,19 @@ const setupUserSocketHandling = (io, users, games) => {
             socket.disconnect(true);
         });
 
-        // socket.on("requestPeers", () => {
-        //     socket.emit("peerList", users.users.map(user => user.nick));
-        // });
-
         socket.on("requestPeers", (_, fn) => {
             fn(users.users.map(user => user.nick));
         });
 
         socket.on("disconnect", () => {
-            const maybeUser = Maybe.fromNullable(
+            const maybeUser = fromNullable(
                 users.users.find(user => user.socketId === socket.id)
             );
             const maybePendingGame = maybeUser.chain(user =>
-                Maybe.fromNullable(
-                    games.pending.find(pg => pg.nick === user.nick)
-                )
+                fromNullable(games.pending.find(pg => pg.nick === user.nick))
             );
             const maybeGame = maybeUser.chain(user =>
-                Maybe.fromNullable(
+                fromNullable(
                     games.ongoing.find(
                         g =>
                             g.game.players.find(n => n === user.nick) !==

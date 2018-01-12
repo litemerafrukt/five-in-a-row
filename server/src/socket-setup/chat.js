@@ -12,7 +12,6 @@ const setupChatSocketHandling = (io, runningMessageBuffer) => {
     io.on("connection", socket => {
         socket.on("requestHistory", () => {
             runningMessageBuffer.buffer.forEach(message => {
-                console.log(message);
                 socket.emit("chatMessage", message);
             });
         });

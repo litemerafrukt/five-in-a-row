@@ -6,6 +6,7 @@ import PageLayout from "./pages/layout/PageLayout";
 import Welcome from "./pages/Welcome";
 import GamePage from "./pages/GamePage";
 import WatchGamePage from "./pages/WatchGamePage";
+import HistoricGamePage from "./pages/HistoricGamePage"
 
 const App = ({ nickname }) => (
     <Router>
@@ -17,6 +18,7 @@ const App = ({ nickname }) => (
                     <Route exact path="/" component={Welcome} />
                     <Route path="/game" component={GamePage} />
                     <Route path="/watch" component={WatchGamePage} />
+                    <Route path="/history" component={HistoricGamePage} />
                 </PageLayout>
             </Switch>
         )}
