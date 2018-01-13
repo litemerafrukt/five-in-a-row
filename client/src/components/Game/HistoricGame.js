@@ -14,9 +14,9 @@ class HistoricGomokuGame extends Component {
             display: {
                 game: this.props.game,
                 moves: this.props.game.moves,
-                nextMoveIndex: null
+                nextMoveIndex: null,
             },
-            ticker: null
+            ticker: null,
         };
 
         this.handleClose = this.handleClose.bind(this);
@@ -47,10 +47,10 @@ class HistoricGomokuGame extends Component {
                 game: gomoku.create(
                     this.state.game.players[0],
                     this.state.game.players[1],
-                    this.state.game.board.length
+                    this.state.game.board.length,
                 ),
-                nextMoveIndex: state.display.moves.length - 1
-            }
+                nextMoveIndex: state.display.moves.length - 1,
+            },
         }));
     }
 
@@ -72,13 +72,13 @@ class HistoricGomokuGame extends Component {
             .makeMove(game, nextMove.player, gomoku.pos(nextMove.x, nextMove.y))
             .matchWith({
                 Ok: ({ value }) => value,
-                Error: ({ value }) => console.log(value) || game
+                Error: ({ value }) => console.error(value) || game,
             });
 
         const nextMoveIndex = moveIndex > 0 ? moveIndex - 1 : null;
 
         this.setState(() => ({
-            display: { game: nextDisplayGame, moves, nextMoveIndex }
+            display: { game: nextDisplayGame, moves, nextMoveIndex },
         }));
     }
 
@@ -136,5 +136,5 @@ class HistoricGomokuGame extends Component {
 }
 
 export default connect(({ history }) => ({ game: history.game }), {
-    clearHistoricGame
+    clearHistoricGame,
 })(HistoricGomokuGame);

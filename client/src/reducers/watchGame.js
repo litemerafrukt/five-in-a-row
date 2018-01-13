@@ -4,7 +4,7 @@ import { gameUpdated } from "./games";
 const initialState = {
     game: null,
     ongoingGames: [],
-    watching: null
+    watching: null,
     // gameMessage: ""
 };
 
@@ -17,7 +17,10 @@ const CLEAR_WATCHING = "CLEAR_WATCHING";
 
 // export const gameMessage = message => ({ type: GAME_MESSAGE, payload: message });
 // export const clearGameMessage = () => ({ type: CLEAR_GAME_MASSAGE });
-export const setOngoingGames = ongoingGames => ({ type: SET_ONGOING_GAMES, payload: ongoingGames });
+export const setOngoingGames = ongoingGames => ({
+    type: SET_ONGOING_GAMES,
+    payload: ongoingGames,
+});
 export const setWatchGame = id => ({ type: WATCH_GAME, payload: id });
 export const clearWatching = () => ({ type: CLEAR_WATCHING });
 
@@ -48,7 +51,6 @@ export const watchGame = id => (dispatch, getState) => {
 export default (state = initialState, action) => {
     switch (action.type) {
         case SET_ONGOING_GAMES:
-            console.log(action.payload);
             return { ...state, ongoingGames: action.payload };
 
         case GAME_UPDATED: {

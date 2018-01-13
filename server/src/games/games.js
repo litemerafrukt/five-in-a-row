@@ -23,7 +23,6 @@ class PendingGame {
 
 class Game {
     constructor(pendingGame, nick2) {
-        console.log(pendingGame);
         this.game = gomoku.create(pendingGame.nick, nick2, pendingGame.size);
         this.id = pendingGame.id;
     }
@@ -35,7 +34,7 @@ class Game {
 
     makeMove(nick, pos) {
         const player = playerIndexToPlayer(
-            this.game.players.findIndex(n => n === nick)
+            this.game.players.findIndex(n => n === nick),
         );
 
         return player === undefined
@@ -45,7 +44,7 @@ class Game {
                       this.game = value;
                       return Result.Ok(this);
                   },
-                  Error: ({ value }) => Result.Error({ value })
+                  Error: ({ value }) => Result.Error({ value }),
               });
     }
 }
@@ -84,7 +83,7 @@ class Games {
     makeMove(id, nick, pos) {
         return Result.fromNullable(
             this.ongoing.find(game => game.id === id),
-            `No game with id: ${id}`
+            `No game with id: ${id}`,
         ).chain(game => game.makeMove(nick, pos));
     }
 }

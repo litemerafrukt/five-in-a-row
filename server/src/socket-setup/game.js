@@ -8,7 +8,6 @@ const gameEnded = game => game.state !== gomoku.STATE.PLAYING;
 
 const saveGame = game => {
     gameHistory.insert(game);
-    console.log("Game saved!", game);
 };
 
 const setupGameSocketHandling = (io, games) => {
@@ -21,14 +20,14 @@ const setupGameSocketHandling = (io, games) => {
         });
 
         socket.on("requestPendingGames", () =>
-            socket.emit("pendingGames", games.pending)
+            socket.emit("pendingGames", games.pending),
         );
 
         socket.on("requestOngoingGames", () =>
             socket.emit(
                 "ongoingGames",
-                games.ongoing.map(g => ({ id: g.id, players: g.game.players }))
-            )
+                games.ongoing.map(g => ({ id: g.id, players: g.game.players })),
+            ),
         );
 
         socket.on("requestGame", ({ id }, fn) => {
@@ -42,7 +41,7 @@ const setupGameSocketHandling = (io, games) => {
             io.emit("pendingGames", games.pending);
             io.emit(
                 "ongoingGames",
-                games.ongoing.map(g => ({ id: g.id, players: g.game.players }))
+                games.ongoing.map(g => ({ id: g.id, players: g.game.players })),
             );
         });
 
@@ -54,8 +53,6 @@ const setupGameSocketHandling = (io, games) => {
         socket.on("cancelGame", ({ id }) => {
             games.removeOngoing(id);
             io.emit("gameAbandoned", { id });
-            console.log("removed game: ", id);
-            console.log(games.ongoing);
         });
 
         socket.on("makeMove", ({ id, nick, pos }) => {
@@ -68,14 +65,13 @@ const setupGameSocketHandling = (io, games) => {
                         saveGame(value.game);
                         io.emit("gameEnded", value);
                     },
-                    Nothing: noop
+                    Nothing: noop,
                 });
 
             resultGame.matchWith({
                 Ok: ({ value }) => io.emit("gameUpdated", { game: value }),
                 Error: ({ value }) =>
-                    console.log(value) ||
-                    io.emit("gameError", { id, error: value })
+                    io.emit("gameError", { id, error: value }),
             });
         });
     });

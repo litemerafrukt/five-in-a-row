@@ -6,7 +6,7 @@ import { addStatusMessage } from "./messages";
 
 const initialState = {
     socket: null,
-    users: []
+    users: [],
 };
 
 const SET_SOCKET = "SET_SOCKET";
@@ -29,8 +29,6 @@ export const connectSocket = nickname => (dispatch, getState) => {
 
     SE.connectionEvents(socket);
 
-    console.log("Anslöt till servern");
-
     socket.on("requestNick", (_, func) => func(nickname));
     socket.on("nickAccepted", () => {
         SE.chatEvents(socket);
@@ -39,7 +37,7 @@ export const connectSocket = nickname => (dispatch, getState) => {
         dispatch(setSocket(socket));
         dispatch(setNickname(nickname));
     });
-    socket.on("nickRejected", () => console.log("nick rejected"));
+    // socket.on("nickRejected", () => console.log("nick rejected"));
 };
 
 export const closeSocket = () => (dispatch, getState) => {
@@ -71,7 +69,10 @@ export default (state = initialState, action) => {
             return { ...state, users: [...state.users, action.payload] };
 
         case REMOVE_PEER:
-            return { ...state, users: state.users.filter(nick => nick !== action.payload) };
+            return {
+                ...state,
+                users: state.users.filter(nick => nick !== action.payload),
+            };
 
         case CLEAR_PEERS:
             return { ...state, users: [] };

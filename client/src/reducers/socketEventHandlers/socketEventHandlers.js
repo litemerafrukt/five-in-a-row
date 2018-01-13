@@ -6,19 +6,19 @@ import {
     setPendingGames,
     gameCreated,
     gameAbandoned,
-    gameUpdated
+    gameUpdated,
 } from "../games";
 import { setOngoingGames } from "../watchGame";
 import { requestHistoricGames } from "../history";
 
 export const connectionEvents = socket => {
-    socket.on("connect", () => {
-        console.log("server connected");
-    });
+    // socket.on("connect", () => {
+    //     console.log("server connected");
+    // });
 
     socket.on("disconnect", reason => {
-        console.log("server disconnected");
-        console.log(reason);
+        // console.log("server disconnected");
+        // console.log(reason);
         switch (reason) {
             case "transport error":
                 // Probably server crash, don't try to recover state, just reload.
@@ -31,8 +31,8 @@ export const connectionEvents = socket => {
                     addStatusMessage({
                         message:
                             "Servern kopplade ner dig. Försök med ett annat nick.",
-                        style: "danger"
-                    })
+                        style: "danger",
+                    }),
                 );
                 break;
 
@@ -40,8 +40,8 @@ export const connectionEvents = socket => {
                 store.dispatch(
                     addStatusMessage({
                         message: "Uppkopplingen till servern försvann!",
-                        style: "danger"
-                    })
+                        style: "danger",
+                    }),
                 );
         }
         store.dispatch(setPeers([]));
@@ -68,11 +68,11 @@ export const peerEvents = socket => {
 
 export const gameEvents = socket => {
     socket.on("pendingGames", pendingGames =>
-        store.dispatch(setPendingGames(pendingGames))
+        store.dispatch(setPendingGames(pendingGames)),
     );
 
     socket.on("ongoingGames", ongoingGames =>
-        store.dispatch(setOngoingGames(ongoingGames))
+        store.dispatch(setOngoingGames(ongoingGames)),
     );
 
     socket.on("gameCreated", game => {
@@ -84,7 +84,7 @@ export const gameEvents = socket => {
     socket.on("gameUpdated", ({ game }) => store.dispatch(gameUpdated(game)));
 
     socket.on("gameError", ({ id, error }) =>
-        console.log(`gameError: ${id}: `, error)
+        console.error(`gameError: ${id}: `, error),
     );
 
     socket.on("gameEnded", game => store.dispatch(requestHistoricGames()));

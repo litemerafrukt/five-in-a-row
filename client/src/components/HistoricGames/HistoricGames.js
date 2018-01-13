@@ -11,13 +11,11 @@ const HistoricGames = class extends React.Component {
     render() {
         const { historicGames, getHistoricGame } = this.props;
 
-        console.log(historicGames);
-
         return (
             <div>
                 <h5>Historiska spel</h5>
                 <ul>
-                    {historicGames.map(g => console.log(g) || (
+                    {historicGames.map(g => (
                         <li key={g._id}>
                             <button
                                 className="btn btn-link"
@@ -37,6 +35,6 @@ export default connect(
     ({ history }) => ({ historicGames: history.historicGames }),
     {
         requestHistoricGames,
-        getHistoricGame
-    }
+        getHistoricGame,
+    },
 )(HistoricGames);

@@ -26,6 +26,7 @@ const dsn =
     process.env.DSN ||
     "mongodb://localhost:27017/gomokuhistory";
 const collectionName = "gomokuhistory";
+
 const history = setupHistory(db, dsn, collectionName);
 
 /**
@@ -60,7 +61,7 @@ socketSetup(io, users, games, runningChatBuffer, history);
  * Start listening
  */
 server.listen(port, () =>
-    console.log(`Five-in-a-row server available on port ${port}.`)
+    console.log(`Five-in-a-row server available on port ${port}.`),
 );
 
 module.exports = server;

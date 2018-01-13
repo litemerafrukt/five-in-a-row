@@ -1,0 +1,28 @@
+version: "2"
+checks:
+    # In reducers you switch and return.
+    return-statements:
+        config:
+            threshold: 12
+
+    # Harmonize a bit with phpmd. 5-8 is seen as moderate complexity
+    method-complexity:
+        enabled: true
+        config:
+            threshold: 8
+
+    # With socket.io some on-connection callbacks gets winding but
+    # still only contains short handlers.
+    method-lines:
+        enabled: true
+        config:
+            threshold: 70
+
+    exclude_patterns:
+    - "**/node_modules/"
+    - "**/*.test.*"
+    - "**/coverage/"
+    - "**/build/"
+    - "**/__mocks__/"
+    - "**/__test__"
+    - "**/.*.js"
